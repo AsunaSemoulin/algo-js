@@ -1,0 +1,5 @@
+const readlineSync = require("readline-sync");
+
+let firstName = readlineSync.question("What is your first name? ");
+
+console.log("Hello " + firstName);
