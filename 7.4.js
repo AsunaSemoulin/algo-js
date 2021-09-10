@@ -1,4 +1,5 @@
 const readlineSync = require("readline-sync");
+const fs = require('fs')
 
 let board = `
 Hello! Welcome to the Pizza Flavors Manager.
@@ -16,6 +17,16 @@ let list = [];
 
 console.log(board);
 let actionNumber;
+
+fs.readFile('list.txt', 'utf8' , (err, data) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    let dataString = data.toString();
+    let finalData = dataString.split(",");
+    list = finalData;
+})
 
 while (actionNumber != 4) {
     let actionNumber = readlineSync.question("Enter your action's number: ");
@@ -35,6 +46,12 @@ while (actionNumber != 4) {
         list.splice(index, 1);
     }
     else {
+        fs.writeFile('list.txt', list.toString(), err => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+        })
         return;
     }
 }
