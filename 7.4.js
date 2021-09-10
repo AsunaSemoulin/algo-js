@@ -30,16 +30,26 @@ let saveFile = () => {
     })
 }
 
-let openFile = () => {
-    fs.readFile('list.json', 'utf8' , (err, data) => {
-        if (err) {
-          console.error(err)
-          return
+let openFile = () => { 
+    try {
+        const data = fs.readFileSync('list.json', 'utf8')
+        let object2 = data;
+        try {
+            object2 = JSON.parse(data);
         }
-        let dataString = data["save"].toString();
-        let finalData = dataString.split(",");
-        list = finalData;
-    })
+        catch {
+            fs.saveFile("list.json", "{'save':[]}", err => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+            });
+        }
+
+        list = object2.save;
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 while (actionNumber != 4) {
@@ -64,6 +74,7 @@ while (actionNumber != 4) {
         saveFile();
     }
     else {
+        saveFile();
         return;
     }
 }
